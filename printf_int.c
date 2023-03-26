@@ -9,7 +9,7 @@ int print_int(va_list i)
 {
 	int len, pow_ten, j, digit, k, count = 0, num;
 
-	n = va_arg(i, int);
+	k = va_arg(i, int);
 	if (k != 0)
 	{
 		if (k < 0)
@@ -24,7 +24,7 @@ int print_int(va_list i)
 			num /= 10;
 			len++;
 		}
-		powten = 1;
+		pow_ten = 1;
 		for (j = 1; j <= len - 1; j++)
 			pow_ten *= 10;
 		for (j = 1; j <= len; j++)

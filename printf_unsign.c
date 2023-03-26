@@ -7,13 +7,13 @@
 */
 int print_unsig(va_list u)
 {
-	unsigned int len, powten, j, digit, k, num;
+	unsigned int len, pow_ten, j, digit, k, num;
 	int count = 0;
 
 	k = va_arg(u, unsigned int);
 	if (k != 0)
 	{
-		num = n;
+		num = k;
 		len = 0;
 		while (num != 0)
 		{
