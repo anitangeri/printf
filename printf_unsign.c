@@ -1,32 +1,34 @@
 #include "main.h"
 /**
- * print_unumber - prints a unsigned num
- * @vlist: arguments passed to print
- * @output_p: host output
- * @o_p: output position
- *
- * Description: Function that print a char
- * Return: int
+ * print_unsigned - Prints an unsigned number
+ * @types: List a of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Number of chars printed.
  */
-int print_unumber(va_list vlist, char *output_p, int o_p)
+int print_unsigned(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	long int a = 1, x = 0, y, n = 0, m = 0, aux = 4294967296;
+	int i = BUFF_SIZE - 2;
+	unsigned long int num = va_arg(types, unsigned long int);
 
-	m = va_arg(vlist, int);
-	if (m < 0)
-		n = aux + m;
-	else
-		n = m;
-	while (n / a > 9)
+	num = convert_size_unsgnd(num, size);
+
+	if (num == 0)
+		buffer[i--] = '0';
+
+	buffer[BUFF_SIZE - 1] = '\0';
+
+	while (num > 0)
 	{
-		a = a * 10;
-		x++;
+		buffer[i--] = (num % 10) + '0';
+		num /= 10;
 	}
-	for (y = 0; y <= x; y++, o_p++)
-	{
-		output_p[o_p] = ((n / a) + '0');
-		n = n % a;
-		a = a / 10;
-	}
-	return (o_p);
+
+	i++;
+
+	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
 }

@@ -1,64 +1,45 @@
 #include "main.h"
-char *p_binary(int n);
 /**
- * print_binary - Print binary
- * @vlist: argument passed to print
- * @output_p: Host output
- * @o_p: Output position
- *
- * Description: print number
- * Return: 0
+ * print_binary - Prints an unsigned number
+ * @types: Lista of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width.
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Numbers of char printed.
  */
-int print_binary(va_list vlist, char *output_p, int o_p)
+int print_binary(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	int x, y = 0;
-	char *ptr;
+	unsigned int n, m, i, sum;
+	unsigned int a[32];
+	int count;
 
-	x = va_arg(vlist, int);
-	ptr = p_binary(x);
+	UNUSED(buffer);
+	UNUSED(flags);
+	UNUSED(width);
+	UNUSED(precision);
+	UNUSED(size);
 
-	for (; ptr[y]; y++, o_p++)
-		output_p[o_p] = ptr[y];
-	return (o_p);
-}
-/**
- * p_binary - Print %
- * @n: number for convert
- *
- * Description: return a binary
- * Return: 0
- */
-char *p_binary(int n)
-{
-	int a, b, count, flag = 0;
-	char *point, *zero = "0";
-
-	count = 0;
-	if (n == 0)
-		return (zero);
-	point = (char *)malloc(33);
-	if (!point)
-		exit(EXIT_FAILURE);
-	for (a = 31; a >= 0; a--)
+	n = va_arg(types, unsigned int);
+	m = 2147483648; /* (2 ^ 31) */
+	a[0] = n / m;
+	for (i = 1; i < 32; i++)
 	{
-		b = n >> a;
-		if (b & 1)
-			*(point + count) = 1 + '0';
-		else
-			*(point + count) = 0 + '0';
-		count++;
+		m /= 2;
+		a[i] = (n / m) % 2;
 	}
-	*(point + count) = '\0';
-	while (point)
+	for (i = 0, sum = 0, count = 0; i < 32; i++)
 	{
+		sum += a[i];
+		if (sum || i == 31)
 		{
-			if (*point != '0')
-				flag = 1;
-			if (flag == 1)
-				return (point);
-			point++;
+			char z = '0' + a[i];
+
+			write(1, &z, 1);
+			count++;
 		}
 	}
-	free(point);
-	return (point);
+	return (count);
 }

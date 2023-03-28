@@ -1,42 +1,51 @@
 #include "main.h"
 /**
- * print_rot13 - Print rot13
- * @vlist: arguments passed to print
- * @output_p: Host output
- * @o_p: output position
- *
- * Description: Fuction that print rot13
- * Return: the int
+ * print_rot13string - Print a string in rot13.
+ * @types: Lista of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Numbers of chars printed
  */
-int print_rot13(va_list vlist, char *output_p, int o_p)
+int print_rot13string(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	int x = 0, y;
-	char *pt = va_arg(vlist, char *);
-	char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	char rot13[] = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
+	char x;
+	char *str;
+	unsigned int i, j;
+	int count = 0;
+	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	if (!pt)
-		pt = "(ahyy)";
-	while (pt[x])
+	str = va_arg(types, char *);
+	UNUSED(buffer);
+	UNUSED(flags);
+	UNUSED(width);
+	UNUSED(precision);
+	UNUSED(size);
+
+	if (str == NULL)
+		str = "(AHYY)";
+	for (i = 0; str[i]; i++)
 	{
-		y = 0;
-		while (alpha[y])
+		for (j = 0; in[j]; j++)
 		{
-			if (pt[x] == alpha[x])
+			if (in[j] == str[i])
 			{
-				output_p[o_p] = rot13[y];
-				o_p++;
+				x = out[j];
+				write(1, &x, 1);
+				count++;
 				break;
 			}
-			if (pt[x] < 65 || (pt[x] > 90 && pt[x] < 97) || pt[x] > 122)
-			{
-				output_p[o_p] = pt[x];
-				o_p++;
-				break;
-			}
-			y++;
 		}
-		x++;
+		if (!in[j])
+		{
+			x = str[i];
+			write(1, &x, 1);
+			count++;
+		}
 	}
-	return (o_p);
+	return (count);
 }
