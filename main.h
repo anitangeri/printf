@@ -1,30 +1,43 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#define SIZE 2048
+
+#include <stdlib.h>
 #include <stdarg.h>
-int _putchar(char c);
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <limits.h>
+
 int _printf(const char *format, ...);
-int print_char(va_list c);
-int print_string(va_list s);
-int print_int(va_list i);
-int print_dec(va_list d);
-int print_rev(va_list r);
-int print_bin(va_list b);
-int print_unsig(va_list u);
-int print_octal(va_list o);
-int print_x(va_list x);
-int print_X(va_list X);
-int printf_rot13(va_list args);
+int (*format_type(char *s))(va_list vlist, char *output_p, int o_p);
+int print_percent(va_list vlist, char *output_p, int o_p);
+int print_char(va_list vlist, char *output_p, int o_p);
+int s_trlen(char *str);
+int print_string(va_list vlist, char *output_p, int o_p);
+int print_numbers(int n, char *output_p, int o_p);
+int print_int(va_list vlist, char *output_p, int o_p);
+int print_single_int(va_list vlist, char *output_p, int o_p);
+int print_octal(va_list vlist, char *output_p, int o_p);
+int print_unumber(va_list vlist, char *output_p, int o_p);
+int print_hexa(va_list vlist, char *output_p, int o_p);
+int print_HEXA(va_list vlist, char *output_o, int o_p);
+int print_HEXA_S(char s, char *output_p, int o_p);
+int print_S_string(va_list vlist, char *output_p, int o_p);
+int print_paddress(va_list vlist, char *output_p, int o_p);
+int print_rot13(va_list vlist, char *output_p, int o_p);
+
 /**
-  * struct code_format - Struct format
-  *
-  * @sc: The specifiers
-  * @f: The function associated
-  */
-typedef struct code_format
+ * struct t_format - Struct t_format
+ * @character: the class
+ * @func: pointer to a function
+ * Description: the structure for the format type
+ */
+typedef struct t_format
 {
-	char *sc;
-	int (*f)(va_list);
-} code_f;
+	char *character;
+	int (*func)(va_list vlist, char *output_p, int o_p);
+} t_f;
 
 #endif
