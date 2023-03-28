@@ -1,41 +1,29 @@
 #include "main.h"
 /**
-* print_octal - unsigned int argument is converted to unsigned octal
-* @o: unsigned to be converted
-* Descriptions: prints unsigned octal
-* Return: size the output
+* print_octal - Print octal
+* @vlist: arguments passed to print
+* @output_p: Host output
+* @o_p: output position
+* Description: Fuction that print octal
+* Return: the int
 */
-int print_octal(va_list o)
+int print_octal(va_list vlist, char *output_p, int o_p)
 {
-	unsigned int len, pow_ten, j, digit, k, num;
-	int count = 0;
+unsigned int decimal, result;
+int x, y = 0;
+char octal[100];
 
-	k = va_arg(o, unsigned int);
-	if (k != 0)
-	{
-		num = k;
-		len = 0;
-		while (num != 0)
-		{
-			num /= 8;
-			len++;
-		}
-		pow_ten = 1;
-		for (j = 1; j <= len - 1; j++)
-			pow_ten *= 8;
-		for (j = 1; j <= len; j++)
-		{
-			digit = k / pow_ten;
-			_putchar(digit + '0');
-			count++;
-			k -= digit * pow_ten;
-			pow_ten /= 8;
-		}
-	}
-	else
-	{
-		_putchar('0');
-		return (1);
-	}
-	return (count);
+decimal = va_arg(vlist, unsigned int);
+if (decimal == 0)
+	octal[y++] = 48;
+while (decimal)
+{
+	result = decimal % 8;
+	if (result < 8)
+		octal[y++] = 48 + result;
+	decimal = decimal / 8;
+}
+for (x = y; x > 0; x--, o_p++)
+	output_p[o_p] = octal[x - 1];
+return (o_p);
 }

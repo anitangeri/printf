@@ -1,24 +1,20 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
 /**
- * print_string - writes the character c to stdout
- * @s: The string to print
- *
- * Return: 1.
- */
-int print_string(va_list s)
+* print_string - Print string
+* @vlist: arguments passed to print
+* @output_p: Host output
+* @o_p: output position
+* Description: Fuction that print a string
+* Return: the int
+*/
+int print_string(va_list vlist, char *output_p, int o_p)
 {
-	char *my_string;
-	int  i = 0;
+int x = 0;
+char *ptr = va_arg(vlist, char *);
 
-	my_string = va_arg(s, char *);
-	if (my_string == NULL)
-		my_string = "(null)";
-	while (my_string[i])
-	{
-		_putchar(my_string[i]);
-		i++;
-	}
-	return (i);
+if (!ptr)
+ptr = "(null)";
+for (; ptr[x]; x++, o_p++)
+output_p[o_p] = ptr[x];
+return (o_p);
 }

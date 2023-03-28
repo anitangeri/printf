@@ -1,37 +1,42 @@
 #include "main.h"
-#include <stdio.h>
 /**
- * printf_rot13 - printf str to ROT13 place into buffer
- * @args: type struct va_arg where is allocated printf arguments
- * Return: counter
+ * print_rot13 - Print rot13
+ * @vlist: arguments passed to print
+ * @output_p: Host output
+ * @o_p: output position
+ *
+ * Description: Fuction that print rot13
+ * Return: the int
  */
-int printf_rot13(va_list args)
+int print_rot13(va_list vlist, char *output_p, int o_p)
 {
-	int i, j, counter = 0;
-	int k = 0;
-	char *s = va_arg(args, char*);
-	char alpha[] = {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"};
-	char beta[] = {"nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM"};
+	int x = 0, y;
+	char *pt = va_arg(vlist, char *);
+	char alpha[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char rot13[] = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
 
-	if (s == NULL)
-		s = "(null)";
-	for (i = 0; s[i]; i++)
+	if (!pt)
+		pt = "(ahyy)";
+	while (pt[x])
 	{
-		k = 0;
-		for (j = 0; alpha[j] && !k; j++)
+		y = 0;
+		while (alpha[y])
 		{
-			if (s[i] == alpha[j])
+			if (pt[x] == alpha[x])
 			{
-				_putchar(beta[j]);
-				counter++;
-				k = 1;
+				output_p[o_p] = rot13[y];
+				o_p++;
+				break;
 			}
+			if (pt[x] < 65 || (pt[x] > 90 && pt[x] < 97) || pt[x] > 122)
+			{
+				output_p[o_p] = pt[x];
+				o_p++;
+				break;
+			}
+			y++;
 		}
-		if (!k)
-		{
-			_putchar(s[i]);
-			counter++;
-		}
+		x++;
 	}
-	return (counter);
+	return (o_p);
 }
