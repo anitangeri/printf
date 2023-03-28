@@ -1,41 +1,32 @@
 #include "main.h"
 /**
-* print_unsig - function that prints unsigned number
-* @u: unsigned number
-* Descriptions: prints unsigned number with putchar
-* Return: size the output
-*/
-int print_unsig(va_list u)
+ * print_unumber - prints a unsigned num
+ * @vlist: arguments passed to print
+ * @output_p: host output
+ * @o_p: output position
+ *
+ * Description: Function that print a char
+ * Return: int
+ */
+int print_unumber(va_list vlist, char *output_p, int o_p)
 {
-	unsigned int len, pow_ten, j, digit, k, num;
-	int count = 0;
+	long int a = 1, x = 0, y, n = 0, m = 0, aux = 4294967296;
 
-	k = va_arg(u, unsigned int);
-	if (k != 0)
-	{
-		num = k;
-		len = 0;
-		while (num != 0)
-		{
-			num /= 10;
-			len++;
-		}
-		pow_ten = 1;
-		for (j = 1; j <= len - 1; j++)
-			pow_ten *= 10;
-		for (j = 1; j <= len; j++)
-		{
-			digit = k / pow_ten;
-			_putchar(digit + '0');
-			count++;
-			k -= digit * pow_ten;
-			pow_ten /= 10;
-		}
-	}
+	m = va_arg(vlist, int);
+	if (m < 0)
+		n = aux + m;
 	else
+		n = m;
+	while (n / a > 9)
 	{
-		_putchar('0');
-		return (1);
+		a = a * 10;
+		x++;
 	}
-	return (count);
+	for (y = 0; y <= x; y++, o_p++)
+	{
+		output_p[o_p] = ((n / a) + '0');
+		n = n % a;
+		a = a / 10;
+	}
+	return (o_p);
 }

@@ -1,48 +1,64 @@
 #include "main.h"
 /**
-* print_int - function that prints an integer
-* @i: integer to print
-* Descriptions: prints digit with _putchar
-* Return: size the output text
-*/
-int print_int(va_list i)
+ * print_numbers - prints integer
+ * @output_p: Host output
+ * @o_p: output position
+ * @n: int
+ *
+ * Description: Function that print a char
+ * Return: int
+ */
+int print_numbers(int n, char *output_p, int o_p)
 {
-	int len, pow_ten, j, digit, k, count = 0, num;
+	int x = 1, y = 0, z;
 
-	k = va_arg(i, int);
-	if (k != 0)
+	if (n < 0)
 	{
-		if (k < 0)
-		{
-			_putchar('-');
-			count++;
-		}
-		num = k;
-		len = 0;
-		while (num != 0)
-		{
-			num /= 10;
-			len++;
-		}
-		pow_ten = 1;
-		for (j = 1; j <= len - 1; j++)
-			pow_ten *= 10;
-		for (j = 1; j <= len; j++)
-		{
-			digit = k / pow_ten;
-			if (k < 0)
-				_putchar((digit * -1) + 48);
-			else
-				_putchar(digit + '0');
-			count++;
-			k -= digit * pow_ten;
-			pow_ten /= 10;
-		}
+		output_p[o_p] = '-';
+		o_p++;
 	}
-	else
+	while (n / x > 9 || n / x < -9)
 	{
-		_putchar('0');
-		return (1);
+		x = x * 10;
+		y++;
 	}
-	return (count);
+	for (z = 0; z <= y; z++)
+	{
+		if (n < 0)
+		{
+			output_p[o_p] = (-(n / x) + '0');
+		}
+		else
+		{
+			output_p[o_p] = ((n / x) + '0');
+		}
+		o_p++;
+		n = n % x;
+		x = x / 10;
+	}
+	return (o_p);
+}
+/**
+ * print_int - prints specifier d
+ * @vlist: arguments passed to print
+ * @output_p: Host output
+ * @o_p: output position
+ *
+ * Return: int
+ */
+int print_int(va_list vlist, char *output_p, int o_p)
+{
+	return (print_numbers(va_arg(vlist, int), output_p, o_p));
+}
+/**
+ * print_single_int - print specifier i
+ * @vlist: arguments passed to print
+ * @output_p: Host output
+ * @o_p: output position
+ *
+ * Return: int
+ */
+int print_single_int(va_list vlist, char *output_p, int o_p)
+{
+	return (print_numbers(va_arg(vlist, int), output_p, o_p));
 }

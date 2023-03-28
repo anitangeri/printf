@@ -1,42 +1,64 @@
-#include <stdarg.h>
-#include <stdio.h>
 #include "main.h"
+char *p_binary(int n);
 /**
-* print_bin - convert to binary
-* @b: number in decinal
-* Return: number of chars printed
-*/
-int print_bin(va_list b)
+ * print_binary - Print binary
+ * @vlist: argument passed to print
+ * @output_p: Host output
+ * @o_p: Output position
+ *
+ * Description: print number
+ * Return: 0
+ */
+int print_binary(va_list vlist, char *output_p, int o_p)
 {
-	unsigned int len, pow_ten, j, digit, k, num;
-	int count = 0;
+	int x, y = 0;
+	char *ptr;
 
-	k = va_arg(b, unsigned int);
-	if (k != 0)
+	x = va_arg(vlist, int);
+	ptr = p_binary(x);
+
+	for (; ptr[y]; y++, o_p++)
+		output_p[o_p] = ptr[y];
+	return (o_p);
+}
+/**
+ * p_binary - Print %
+ * @n: number for convert
+ *
+ * Description: return a binary
+ * Return: 0
+ */
+char *p_binary(int n)
+{
+	int a, b, count, flag = 0;
+	char *point, *zero = "0";
+
+	count = 0;
+	if (n == 0)
+		return (zero);
+	point = (char *)malloc(33);
+	if (!point)
+		exit(EXIT_FAILURE);
+	for (a = 31; a >= 0; a--)
 	{
-		num = k;
-		len = 0;
-		while (num != 0)
+		b = n >> a;
+		if (b & 1)
+			*(point + count) = 1 + '0';
+		else
+			*(point + count) = 0 + '0';
+		count++;
+	}
+	*(point + count) = '\0';
+	while (point)
+	{
 		{
-			num /= 2;
-			len++;
-		}
-		pow_ten = 1;
-		for (j = 1; j <= len - 1; j++)
-			pow_ten *= 2;
-		for (j = 1; j <= len; j++)
-		{
-			digit = k / pow_ten;
-			_putchar(digit + '0');
-			count++;
-			k -= digit * pow_ten;
-			pow_ten /= 2;
+			if (*point != '0')
+				flag = 1;
+			if (flag == 1)
+				return (point);
+			point++;
 		}
 	}
-	else
-	{
-		_putchar('0');
-		return (1);
-	}
-	return (count);
+	free(point);
+	return (point);
 }

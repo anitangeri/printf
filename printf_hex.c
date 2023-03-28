@@ -1,69 +1,31 @@
 #include "main.h"
 /**
-* print_hex - function that prints an unsigned int in hexadecimal
-* @n: unsigned to be printed
-* @c: case of printing (0 = lower, 1 = upper)
-* Descriptions: prints unsigned in hexadecimal with _putchar
-* Return: size the output
+* print_hexa - Print hexadecimal
+* @vlist: arguments passed to print
+* @output_p: Host output
+* @o_p: output position
+*
+* Description: Fuction that print hexa
+* Return: the int
 */
-int print_hex(unsigned int n, unsigned int c)
+int print_hexa(va_list vlist, char *output_p, int o_p)
 {
-	unsigned int len, pow_ten, j, digit, num;
-	int count = 0;
-	char diff;
-
-	if (n != 0)
-	{
-		num = n;
-		len = 0;
-		if (c)
-			diff = 'A' - ':';
-		else
-			diff = 'a' - ':';
-		while (num != 0)
-		{
-			num /= 16;
-			len++;
-		}
-		pow_ten = 1;
-		for (j = 1; j <= len - 1; j++)
-			pow_ten *= 16;
-		for (j = 1; j <= len; j++)
-		{
-			digit = n / pow_ten;
-			if (digit < 10)
-				_putchar(digit + '0');
-			else
-				_putchar(digit + '0' + diff);
-			count++;
-			n -= digit * pow_ten;
-			pow_ten /= 16;
-		}
-	}
+unsigned int decimal, result;
+int x, y = 0;
+char hexa[100];
+decimal = va_arg(vlist, unsigned int);
+if (decimal == 0)
+	hexa[y++] = 48;
+while (decimal)
+{
+	result = decimal % 16;
+	if (result < 10)
+		hexa[y++] = 48 + result;
 	else
-	{
-		_putchar('0');
-		return (1);
-	}
-	return (count);
+		hexa[y++] = 87 + result;
+	decimal = decimal / 16;
 }
-/**
-* print_x - takes an unsigned int an prints it in lowercase hex
-* @x: unsigned int to print
-* Descriptions: prints in lowercase hex with _putchar
-* Return: size of the output
-*/
-int print_x(va_list x)
-{
-	return (print_hex(va_arg(x, unsigned int), 0));
-}
-/**
-* print_X - takes an unsigned int an prints it in uppercase hex
-* @X: unsigned int to print
-* Descriptions: prints in uppercase hex with _putchar
-* Return: size of the output
-*/
-int print_X(va_list X)
-{
-	return (print_hex(va_arg(X, unsigned int), 1));
+for (x = y; x > 0; x--, o_p++)
+	output_p[o_p] = hexa[x - 1];
+return (o_p);
 }
