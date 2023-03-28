@@ -17,7 +17,6 @@ int (*format_type(char *s))(va_list vlist, char *output_p, int o_p)
 		{"u", print_unumber},
 		{"x", print_hexa},
 		{"X", print_HEXA},
-		{"S", print_S_string},
 		{"p", print_paddress},
 		{"R", print_rot13},
 {NULL, NULL}
