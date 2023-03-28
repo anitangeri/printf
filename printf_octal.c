@@ -1,29 +1,60 @@
 #include "main.h"
 /**
-* print_octal - Print octal
-* @vlist: arguments passed to print
-* @output_p: Host output
-* @o_p: output position
-* Description: Fuction that print octal
-* Return: the int
-*/
-int print_octal(va_list vlist, char *output_p, int o_p)
+ * print_octal - Prints an unsigned number in octal notation
+ * @types: Lista of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Number of chars printed
+ */
+int print_octal(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-unsigned int decimal, result;
-int x, y = 0;
-char octal[100];
 
-decimal = va_arg(vlist, unsigned int);
-if (decimal == 0)
-	octal[y++] = 48;
-while (decimal)
+	int i = BUFF_SIZE - 2;
+	unsigned long int num = va_arg(types, unsigned long int);
+	unsigned long int init_num = num;
+
+	UNUSED(width);
+
+	num = convert_size_unsgnd(num, size);
+
+	if (num == 0)
+		buffer[i--] = '0';
+
+	buffer[BUFF_SIZE - 1] = '\0';
+
+	while (num > 0)
+	{
+		buffer[i--] = (num % 8) + '0';
+		num /= 8;
+	}
+
+	if (flags & F_HASH && init_num != 0)
+		buffer[i--] = '0';
+
+	i++;
+
+	return (write_unsgnd(0, i, buffer, flags, width, precision, size));
+}
+
+/************** PRINT UNSIGNED NUMBER IN HEXADECIMAL **************/
+/**
+ * print_hexadecimal - Prints an unsigned number in hexadecimal notation
+ * @types: Lista of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Number of chars printed
+ */
+int print_hexadecimal(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	result = decimal % 8;
-	if (result < 8)
-		octal[y++] = 48 + result;
-	decimal = decimal / 8;
+	return (print_hexa(types, "0123456789abcdef", buffer,
+		flags, 'x', width, precision, size));
 }
-for (x = y; x > 0; x--, o_p++)
-	output_p[o_p] = octal[x - 1];
-return (o_p);
-}
+

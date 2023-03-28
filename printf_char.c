@@ -1,15 +1,19 @@
 #include "main.h"
-
 /**
- * print_char - prints a char
- * @vlist: arguments passed to print
- * @output_p: Host output
- * @o_p: output position
- * Description: Function that print a char
- * Return: int
+ * print_char - Prints a char
+ * @types: List a of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: Width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Number of chars printed
  */
-int print_char(va_list vlist, char *output_p, int o_p)
+int print_char(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	output_p[o_p] = va_arg(vlist, int);
-	return (++o_p);
+	char c = va_arg(types, int);
+
+	return (handle_write_char(c, buffer, flags, width, precision, size));
 }
+

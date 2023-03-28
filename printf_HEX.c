@@ -1,31 +1,18 @@
 #include "main.h"
 /**
- * print_HEXA - Print hexadecimal upper
- * @vlist: arguments passed to print
- * @output_p: Host output
- * @o_p: output position
- * Description: Fuction that print hexa
- * Return: the int
+ * print_hexa_upper - Prints an unsigned number in upper hexadecimal notation
+ * @types: Lista of arguments
+ * @buffer: Buffer array to handle print
+ * @flags:  Calculates active flags
+ * @width: get width
+ * @precision: Precision specification
+ * @size: Size specifier
+ * Return: Number of chars printed
  */
-int print_HEXA(va_list vlist, char *output_p, int o_p)
+int print_hexa_upper(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
 {
-	unsigned int decimal, result;
-	int x, y = 0;
-	char hexa[100];
-
-	decimal = va_arg(vlist, unsigned int);
-	if (decimal == 0)
-		hexa[y++] = 48;
-	while (decimal)
-	{
-		result = decimal % 16;
-		if (result < 10)
-			hexa[y++] = 48 + result;
-		else
-			hexa[y++] = 55 + result;
-		decimal = decimal / 16;
-	}
-	for (x = y; x > 0; x--, o_p++)
-		output_p[o_p] = hexa[x - 1];
-	return (o_p);
+	return (print_hexa(types, "0123456789ABCDEF", buffer,
+		flags, 'X', width, precision, size));
 }
+
